@@ -2,9 +2,18 @@
 
 import { useState, useEffect } from 'react';
 
+type TestData = {
+  message: string;
+  data: {
+    environment: string;
+    timestamp: string;
+    version: string;
+  };
+} | null;
+
 export default function Home() {
   const [backendStatus, setBackendStatus] = useState<string>('Loading...');
-  const [testData, setTestData] = useState<any>(null);
+  const [testData, setTestData] = useState<TestData>(null);
   const [error, setError] = useState<string>('');
 
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
@@ -12,8 +21,7 @@ export default function Home() {
   useEffect(() => {
     // Test health endpoint
     fetch(`${backendUrl}/health`)
-      .then(response => response.json())
-      .then(data => {
+      .then(() => {
         setBackendStatus('Connected');
       })
       .catch(err => {
@@ -24,7 +32,7 @@ export default function Home() {
     // Test API endpoint
     fetch(`${backendUrl}/api/test`)
       .then(response => response.json())
-      .then(data => {
+      .then((data: TestData) => {
         setTestData(data);
       })
       .catch(err => {
