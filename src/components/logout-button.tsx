@@ -13,4 +13,4 @@ export function LogoutButton() {
       Log out
     </button>
   )
-} 
+}
